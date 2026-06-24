@@ -1,0 +1,15 @@
+name: Cron Test
+
+on:
+  schedule:
+    - cron: '* * * * *'      # jede Minute (UTC), nur testweise
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tick
+        run: |
+          date -u
+          echo "cron tick (UTC)"

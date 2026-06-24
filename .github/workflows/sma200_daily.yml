@@ -2,7 +2,7 @@ name: SMA200 Daily Update
 
 on:
   schedule:
-    - cron: '15 23 * * 1-5'   # Mo–Fr, 23:15 UTC (solider Puffer nach US-Close)
+    - cron: '* * * * *' #every minute
   workflow_dispatch:
 
 jobs:

@@ -1,0 +1,38 @@
+name: SMA200 Daily Update
+
+on:
+  schedule:
+    - cron: '15 23 * * 1-5'   # Mo–Fr, 23:15 UTC (solider Puffer nach US-Close)
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade yfinance pandas requests numpy
+
+      - name: Test Telegram secrets (manual runs only)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="Pipeline check ✅"
+
+      - name: Run daily SMA200 update
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_CHAT_ID }}
+          TREND_EPS_PCT: '0.05'
+          TICKER: '^GSPC'      # oder 'SPY' – wie du willst
+        run: python check_sma200.py

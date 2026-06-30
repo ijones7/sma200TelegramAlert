@@ -2,7 +2,7 @@ name: Cron Test
 
 on:
   schedule:
-    - cron: '* * * * *'      # jede Minute (UTC), nur testweise
+    - cron: '0 0 1 * *'      # jede Minute (UTC), nur testweise
   workflow_dispatch:
 
 jobs:

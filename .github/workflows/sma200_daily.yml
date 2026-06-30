@@ -2,7 +2,7 @@ name: SMA200 Daily Update
 
 on:
   schedule:
-    - cron: '* * * * *' #every minute
+    - cron: '0 0 1 * *' #every minute
   workflow_dispatch:
 
 jobs:
